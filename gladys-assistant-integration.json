@@ -1,0 +1,766 @@
+{
+  "manifest_version": 1,
+  "type": "device",
+  "name": "Hydro-Québec Peaks",
+  "description": {
+    "en": "Hydro-Québec winter peak events: pre-heat, start and end of every peak in your scenes.",
+    "fr": "Pointes hivernales Hydro-Québec : préchauffage, début et fin de chaque pointe dans vos scènes.",
+    "de": "Winterspitzen von Hydro-Québec: Vorheizen, Beginn und Ende jeder Spitze in deinen Szenen.",
+    "es": "Puntas de invierno de Hydro-Québec: precalentamiento, inicio y fin de cada punta en sus escenas."
+  },
+  "version": "1.0.0",
+  "docker_image": "ghcr.io/prohand/gladys-hydroquebec-peak:1.0.0",
+  "gladys_version": ">=5.3.0",
+  "cover_image": "https://raw.githubusercontent.com/prohand/gladys-hydroquebec-peak/main/cover.png",
+  "categories": ["energy", "climate"],
+  "keywords": [
+    "hydro-québec",
+    "hydro-quebec",
+    "pointe",
+    "pointes hivernales",
+    "crédits hivernaux",
+    "flex d",
+    "tarif dynamique",
+    "cpc-d",
+    "tpc-dpc",
+    "québec"
+  ],
+  "transports": ["cloud"],
+  "config_schema": [
+    {
+      "key": "intro",
+      "type": "section",
+      "label": {
+        "en": "Getting started",
+        "fr": "Pour commencer",
+        "de": "Erste Schritte",
+        "es": "Primeros pasos"
+      },
+      "description": {
+        "en": "This integration reads the winter peak events Hydro-Québec publishes as open data: no account, no key. Tick the offer you are enrolled in (it is written on your bill and in your Customer Space), and each offer becomes a device with its peak flags, plus scene triggers for the announcement, the pre-heat window, the start and the end of every peak. Unofficial integration, not affiliated with Hydro-Québec.",
+        "fr": "Cette intégration lit les événements de pointe hivernale qu'Hydro-Québec publie en données ouvertes : ni compte, ni clé. Cochez l'offre à laquelle vous êtes inscrit (elle figure sur votre facture et dans votre Espace client) : chaque offre devient un appareil avec ses indicateurs de pointe, et des déclencheurs de scène pour l'annonce, le préchauffage, le début et la fin de chaque pointe. Intégration non officielle, sans lien avec Hydro-Québec.",
+        "de": "Diese Integration liest die Winterspitzen-Ereignisse, die Hydro-Québec als offene Daten veröffentlicht: kein Konto, kein Schlüssel. Kreuze das Angebot an, bei dem du angemeldet bist (es steht auf deiner Rechnung und in deinem Kundenbereich): Jedes Angebot wird zu einem Gerät mit seinen Spitzen-Anzeigen, dazu Szenen-Auslöser für die Ankündigung, das Vorheizfenster, den Beginn und das Ende jeder Spitze. Inoffizielle Integration, nicht mit Hydro-Québec verbunden.",
+        "es": "Esta integración lee los eventos de punta de invierno que Hydro-Québec publica como datos abiertos: sin cuenta ni clave. Marque la oferta en la que está inscrito (figura en su factura y en su Espacio cliente): cada oferta se convierte en un dispositivo con sus indicadores de punta, más disparadores de escena para el anuncio, la ventana de precalentamiento, el inicio y el fin de cada punta. Integración no oficial, sin relación con Hydro-Québec."
+      },
+      "links": [
+        {
+          "url": "https://github.com/prohand/gladys-hydroquebec-peak/blob/main/docs/en.md",
+          "label": {
+            "en": "Integration documentation",
+            "fr": "Documentation de l'intégration",
+            "de": "Dokumentation der Integration",
+            "es": "Documentación de la integración"
+          }
+        },
+        {
+          "url": "https://donnees.hydroquebec.com/explore/dataset/evenements-pointe/",
+          "label": {
+            "en": "Hydro-Québec open data: peak events",
+            "fr": "Données ouvertes Hydro-Québec : événements de pointe",
+            "de": "Offene Daten von Hydro-Québec: Spitzenereignisse",
+            "es": "Datos abiertos de Hydro-Québec: eventos de punta"
+          }
+        }
+      ]
+    },
+    {
+      "key": "offers",
+      "type": "multi_select",
+      "label": {
+        "en": "Offers followed",
+        "fr": "Offres suivies",
+        "de": "Verfolgte Angebote",
+        "es": "Ofertas seguidas"
+      },
+      "description": {
+        "en": "The peak offers you are enrolled in. One device per offer.",
+        "fr": "Les offres de pointe auxquelles vous êtes inscrit. Un appareil par offre.",
+        "de": "Die Spitzen-Angebote, bei denen du angemeldet bist. Ein Gerät pro Angebot.",
+        "es": "Las ofertas de punta en las que está inscrito. Un dispositivo por oferta."
+      },
+      "required": false,
+      "options": [
+        {
+          "value": "CPC-D",
+          "label": {
+            "en": "Rate D with Winter Credit Option (CPC-D)",
+            "fr": "Tarif D avec crédits hivernaux (CPC-D)",
+            "de": "Tarif D mit Winter-Gutschrift (CPC-D)",
+            "es": "Tarifa D con créditos de invierno (CPC-D)"
+          }
+        },
+        {
+          "value": "TPC-DPC",
+          "label": {
+            "en": "Rate Flex D (TPC-DPC)",
+            "fr": "Tarif Flex D (TPC-DPC)",
+            "de": "Tarif Flex D (TPC-DPC)",
+            "es": "Tarifa Flex D (TPC-DPC)"
+          }
+        },
+        {
+          "value": "CPC-G",
+          "label": {
+            "en": "Winter Credit Option, business (CPC-G)",
+            "fr": "Crédits hivernaux, affaires (CPC-G)",
+            "de": "Winter-Gutschrift, Geschäftskunden (CPC-G)",
+            "es": "Créditos de invierno, empresas (CPC-G)"
+          }
+        },
+        {
+          "value": "TPC-GPC",
+          "label": {
+            "en": "Rate Flex G, business (TPC-GPC)",
+            "fr": "Tarif Flex G, affaires (TPC-GPC)",
+            "de": "Tarif Flex G, Geschäftskunden (TPC-GPC)",
+            "es": "Tarifa Flex G, empresas (TPC-GPC)"
+          }
+        },
+        {
+          "value": "GDP-Affaires",
+          "label": {
+            "en": "Demand response, business (GDP-Affaires)",
+            "fr": "Gestion de la demande, affaires (GDP-Affaires)",
+            "de": "Lastmanagement, Geschäftskunden (GDP-Affaires)",
+            "es": "Gestión de la demanda, empresas (GDP-Affaires)"
+          }
+        },
+        {
+          "value": "OEA",
+          "label": {
+            "en": "OEA, business (OEA)",
+            "fr": "OEA, affaires (OEA)",
+            "de": "OEA, Geschäftskunden (OEA)",
+            "es": "OEA, empresas (OEA)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "other_offers",
+      "type": "string",
+      "label": {
+        "en": "Other offers",
+        "fr": "Autres offres",
+        "de": "Weitere Angebote",
+        "es": "Otras ofertas"
+      },
+      "description": {
+        "en": "Offers the list above lacks, by their code, separated by commas (the button \"List the offers\" gives them all).",
+        "fr": "Les offres absentes de la liste ci-dessus, par leur code, séparées par des virgules (le bouton « Lister les offres » les donne toutes).",
+        "de": "Angebote, die in der Liste oben fehlen, mit ihrem Code, durch Kommas getrennt (die Schaltfläche „Angebote auflisten“ nennt sie alle).",
+        "es": "Las ofertas que faltan en la lista de arriba, por su código, separadas por comas (el botón «Listar las ofertas» las da todas)."
+      },
+      "required": false,
+      "placeholder": {
+        "en": "ENG_100H_2F_7J, Chaine de bloc",
+        "fr": "ENG_100H_2F_7J, Chaine de bloc",
+        "de": "ENG_100H_2F_7J, Chaine de bloc",
+        "es": "ENG_100H_2F_7J, Chaine de bloc"
+      }
+    },
+    {
+      "key": "preheat_minutes",
+      "type": "number",
+      "label": {
+        "en": "Pre-heat lead time (minutes)",
+        "fr": "Avance du préchauffage (minutes)",
+        "de": "Vorlauf des Vorheizens (Minuten)",
+        "es": "Antelación del precalentamiento (minutos)"
+      },
+      "description": {
+        "en": "How long before a peak the pre-heat window opens. Hydro-Québec advises about two hours. 0 turns the pre-heat window off.",
+        "fr": "Combien de temps avant une pointe s'ouvre la fenêtre de préchauffage. Hydro-Québec conseille environ deux heures. 0 désactive le préchauffage.",
+        "de": "Wie lange vor einer Spitze sich das Vorheizfenster öffnet. Hydro-Québec empfiehlt etwa zwei Stunden. 0 schaltet das Vorheizen aus.",
+        "es": "Cuánto tiempo antes de una punta se abre la ventana de precalentamiento. Hydro-Québec aconseja unas dos horas. 0 la desactiva."
+      },
+      "required": false,
+      "default": 120,
+      "min": 0,
+      "max": 360
+    },
+    {
+      "key": "poll_frequency",
+      "type": "number",
+      "label": {
+        "en": "Refresh interval (s)",
+        "fr": "Intervalle de rafraîchissement (s)",
+        "de": "Aktualisierungsintervall (s)",
+        "es": "Intervalo de actualización (s)"
+      },
+      "description": {
+        "en": "How often the Hydro-Québec data is read again, in seconds. Peaks are published hours ahead: 15 minutes is plenty. The flags themselves change on the minute.",
+        "fr": "Fréquence de relecture des données d'Hydro-Québec, en secondes. Les pointes sont publiées des heures à l'avance : 15 minutes suffisent. Les indicateurs, eux, changent à la minute près.",
+        "de": "Wie oft die Daten von Hydro-Québec neu gelesen werden, in Sekunden. Spitzen werden Stunden im Voraus veröffentlicht: 15 Minuten genügen. Die Anzeigen selbst wechseln auf die Minute genau.",
+        "es": "Cada cuánto se vuelven a leer los datos de Hydro-Québec, en segundos. Las puntas se publican con horas de antelación: 15 minutos bastan. Los indicadores cambian al minuto."
+      },
+      "required": false,
+      "default": 900,
+      "min": 300,
+      "max": 3600
+    }
+  ],
+  "actions": [
+    {
+      "key": "test_connection",
+      "label": {
+        "en": "Test the connection",
+        "fr": "Tester la connexion",
+        "de": "Verbindung testen",
+        "es": "Probar la conexión"
+      },
+      "timeout_seconds": 45
+    },
+    {
+      "key": "list_offers",
+      "label": {
+        "en": "List the offers",
+        "fr": "Lister les offres",
+        "de": "Angebote auflisten",
+        "es": "Listar las ofertas"
+      },
+      "timeout_seconds": 45
+    }
+  ],
+  "widgets": [
+    {
+      "key": "peaks",
+      "label": {
+        "en": "Hydro-Québec peaks",
+        "fr": "Pointes Hydro-Québec",
+        "de": "Hydro-Québec-Spitzen",
+        "es": "Puntas de Hydro-Québec"
+      },
+      "description": {
+        "en": "Countdown to the next peak, the announced peaks and the state of each offer.",
+        "fr": "Compte à rebours avant la prochaine pointe, pointes annoncées et état de chaque offre.",
+        "de": "Countdown bis zur nächsten Spitze, angekündigte Spitzen und Zustand jedes Angebots.",
+        "es": "Cuenta atrás hasta la próxima punta, puntas anunciadas y estado de cada oferta."
+      },
+      "icon": "zap",
+      "settings": [
+        {
+          "key": "peaks",
+          "type": "number",
+          "label": {
+            "en": "Peaks listed",
+            "fr": "Pointes listées",
+            "de": "Aufgelistete Spitzen",
+            "es": "Puntas listadas"
+          },
+          "description": {
+            "en": "How many announced peaks are listed (1 to 8).",
+            "fr": "Nombre de pointes annoncées listées (1 à 8).",
+            "de": "Wie viele angekündigte Spitzen aufgelistet werden (1 bis 8).",
+            "es": "Cuántas puntas anunciadas se listan (1 a 8)."
+          },
+          "required": false,
+          "default": 4,
+          "min": 1,
+          "max": 8
+        }
+      ],
+      "action_timeout_seconds": 45
+    }
+  ],
+  "scene_triggers": [
+    {
+      "key": "peak_announced",
+      "label": {
+        "en": "A peak is announced",
+        "fr": "Une pointe est annoncée",
+        "de": "Eine Spitze wird angekündigt",
+        "es": "Se anuncia una punta"
+      },
+      "description": {
+        "en": "Hydro-Québec published a new peak for the offer, usually the day before.",
+        "fr": "Hydro-Québec a publié une nouvelle pointe pour l'offre, en général la veille.",
+        "de": "Hydro-Québec hat eine neue Spitze für das Angebot veröffentlicht, meist am Vortag.",
+        "es": "Hydro-Québec ha publicado una nueva punta para la oferta, normalmente la víspera."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Offer",
+            "fr": "Offre",
+            "de": "Angebot",
+            "es": "Oferta"
+          },
+          "required": false
+        },
+        {
+          "key": "slot",
+          "type": "multi_select",
+          "label": {
+            "en": "Time slot",
+            "fr": "Plage horaire",
+            "de": "Zeitfenster",
+            "es": "Franja horaria"
+          },
+          "options": [
+            {
+              "value": "AM",
+              "label": {
+                "en": "Morning (AM)",
+                "fr": "Matin (AM)",
+                "de": "Morgen (AM)",
+                "es": "Mañana (AM)"
+              }
+            },
+            {
+              "value": "PM",
+              "label": {
+                "en": "Evening (PM)",
+                "fr": "Soir (PM)",
+                "de": "Abend (PM)",
+                "es": "Tarde (PM)"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "offer",
+          "type": "string",
+          "label": {
+            "en": "Offer code",
+            "fr": "Code de l'offre",
+            "de": "Angebotscode",
+            "es": "Código de la oferta"
+          }
+        },
+        {
+          "key": "start",
+          "type": "string",
+          "label": {
+            "en": "Start (Québec time)",
+            "fr": "Début (heure du Québec)",
+            "de": "Beginn (Ortszeit Québec)",
+            "es": "Inicio (hora de Quebec)"
+          }
+        },
+        {
+          "key": "end",
+          "type": "string",
+          "label": {
+            "en": "End (Québec time)",
+            "fr": "Fin (heure du Québec)",
+            "de": "Ende (Ortszeit Québec)",
+            "es": "Fin (hora de Quebec)"
+          }
+        },
+        {
+          "key": "duration_minutes",
+          "type": "number",
+          "label": {
+            "en": "Duration (minutes)",
+            "fr": "Durée (minutes)",
+            "de": "Dauer (Minuten)",
+            "es": "Duración (minutos)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "preheat_started",
+      "label": {
+        "en": "The pre-heat window opens",
+        "fr": "La fenêtre de préchauffage s'ouvre",
+        "de": "Das Vorheizfenster öffnet sich",
+        "es": "Se abre la ventana de precalentamiento"
+      },
+      "description": {
+        "en": "The pre-heat lead time before a peak has begun: time to store heat.",
+        "fr": "L'avance de préchauffage avant une pointe a commencé : le moment de stocker la chaleur.",
+        "de": "Der Vorheiz-Vorlauf vor einer Spitze hat begonnen: Zeit, Wärme zu speichern.",
+        "es": "Ha comenzado la antelación de precalentamiento antes de una punta: momento de almacenar calor."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Offer",
+            "fr": "Offre",
+            "de": "Angebot",
+            "es": "Oferta"
+          },
+          "required": false
+        },
+        {
+          "key": "slot",
+          "type": "multi_select",
+          "label": {
+            "en": "Time slot",
+            "fr": "Plage horaire",
+            "de": "Zeitfenster",
+            "es": "Franja horaria"
+          },
+          "options": [
+            {
+              "value": "AM",
+              "label": {
+                "en": "Morning (AM)",
+                "fr": "Matin (AM)",
+                "de": "Morgen (AM)",
+                "es": "Mañana (AM)"
+              }
+            },
+            {
+              "value": "PM",
+              "label": {
+                "en": "Evening (PM)",
+                "fr": "Soir (PM)",
+                "de": "Abend (PM)",
+                "es": "Tarde (PM)"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "offer",
+          "type": "string",
+          "label": {
+            "en": "Offer code",
+            "fr": "Code de l'offre",
+            "de": "Angebotscode",
+            "es": "Código de la oferta"
+          }
+        },
+        {
+          "key": "start",
+          "type": "string",
+          "label": {
+            "en": "Start (Québec time)",
+            "fr": "Début (heure du Québec)",
+            "de": "Beginn (Ortszeit Québec)",
+            "es": "Inicio (hora de Quebec)"
+          }
+        },
+        {
+          "key": "end",
+          "type": "string",
+          "label": {
+            "en": "End (Québec time)",
+            "fr": "Fin (heure du Québec)",
+            "de": "Ende (Ortszeit Québec)",
+            "es": "Fin (hora de Quebec)"
+          }
+        },
+        {
+          "key": "duration_minutes",
+          "type": "number",
+          "label": {
+            "en": "Duration (minutes)",
+            "fr": "Durée (minutes)",
+            "de": "Dauer (Minuten)",
+            "es": "Duración (minutos)"
+          }
+        },
+        {
+          "key": "lead_minutes",
+          "type": "number",
+          "label": {
+            "en": "Lead time (minutes)",
+            "fr": "Avance (minutes)",
+            "de": "Vorlauf (Minuten)",
+            "es": "Antelación (minutos)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "peak_started",
+      "label": {
+        "en": "A peak starts",
+        "fr": "Une pointe commence",
+        "de": "Eine Spitze beginnt",
+        "es": "Empieza una punta"
+      },
+      "description": {
+        "en": "A peak of the offer has begun: time to shed load.",
+        "fr": "Une pointe de l'offre a commencé : le moment de délester.",
+        "de": "Eine Spitze des Angebots hat begonnen: Zeit, Last abzuwerfen.",
+        "es": "Ha empezado una punta de la oferta: momento de reducir el consumo."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Offer",
+            "fr": "Offre",
+            "de": "Angebot",
+            "es": "Oferta"
+          },
+          "required": false
+        },
+        {
+          "key": "slot",
+          "type": "multi_select",
+          "label": {
+            "en": "Time slot",
+            "fr": "Plage horaire",
+            "de": "Zeitfenster",
+            "es": "Franja horaria"
+          },
+          "options": [
+            {
+              "value": "AM",
+              "label": {
+                "en": "Morning (AM)",
+                "fr": "Matin (AM)",
+                "de": "Morgen (AM)",
+                "es": "Mañana (AM)"
+              }
+            },
+            {
+              "value": "PM",
+              "label": {
+                "en": "Evening (PM)",
+                "fr": "Soir (PM)",
+                "de": "Abend (PM)",
+                "es": "Tarde (PM)"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "offer",
+          "type": "string",
+          "label": {
+            "en": "Offer code",
+            "fr": "Code de l'offre",
+            "de": "Angebotscode",
+            "es": "Código de la oferta"
+          }
+        },
+        {
+          "key": "start",
+          "type": "string",
+          "label": {
+            "en": "Start (Québec time)",
+            "fr": "Début (heure du Québec)",
+            "de": "Beginn (Ortszeit Québec)",
+            "es": "Inicio (hora de Quebec)"
+          }
+        },
+        {
+          "key": "end",
+          "type": "string",
+          "label": {
+            "en": "End (Québec time)",
+            "fr": "Fin (heure du Québec)",
+            "de": "Ende (Ortszeit Québec)",
+            "es": "Fin (hora de Quebec)"
+          }
+        },
+        {
+          "key": "duration_minutes",
+          "type": "number",
+          "label": {
+            "en": "Duration (minutes)",
+            "fr": "Durée (minutes)",
+            "de": "Dauer (Minuten)",
+            "es": "Duración (minutos)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "peak_ended",
+      "label": {
+        "en": "A peak ends",
+        "fr": "Une pointe se termine",
+        "de": "Eine Spitze endet",
+        "es": "Termina una punta"
+      },
+      "description": {
+        "en": "A peak of the offer is over: everything can be put back.",
+        "fr": "Une pointe de l'offre est terminée : tout peut reprendre.",
+        "de": "Eine Spitze des Angebots ist vorbei: Alles kann zurückgestellt werden.",
+        "es": "Ha terminado una punta de la oferta: todo puede volver a la normalidad."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Offer",
+            "fr": "Offre",
+            "de": "Angebot",
+            "es": "Oferta"
+          },
+          "required": false
+        },
+        {
+          "key": "slot",
+          "type": "multi_select",
+          "label": {
+            "en": "Time slot",
+            "fr": "Plage horaire",
+            "de": "Zeitfenster",
+            "es": "Franja horaria"
+          },
+          "options": [
+            {
+              "value": "AM",
+              "label": {
+                "en": "Morning (AM)",
+                "fr": "Matin (AM)",
+                "de": "Morgen (AM)",
+                "es": "Mañana (AM)"
+              }
+            },
+            {
+              "value": "PM",
+              "label": {
+                "en": "Evening (PM)",
+                "fr": "Soir (PM)",
+                "de": "Abend (PM)",
+                "es": "Tarde (PM)"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "offer",
+          "type": "string",
+          "label": {
+            "en": "Offer code",
+            "fr": "Code de l'offre",
+            "de": "Angebotscode",
+            "es": "Código de la oferta"
+          }
+        },
+        {
+          "key": "start",
+          "type": "string",
+          "label": {
+            "en": "Start (Québec time)",
+            "fr": "Début (heure du Québec)",
+            "de": "Beginn (Ortszeit Québec)",
+            "es": "Inicio (hora de Quebec)"
+          }
+        },
+        {
+          "key": "end",
+          "type": "string",
+          "label": {
+            "en": "End (Québec time)",
+            "fr": "Fin (heure du Québec)",
+            "de": "Ende (Ortszeit Québec)",
+            "es": "Fin (hora de Quebec)"
+          }
+        },
+        {
+          "key": "duration_minutes",
+          "type": "number",
+          "label": {
+            "en": "Duration (minutes)",
+            "fr": "Durée (minutes)",
+            "de": "Dauer (Minuten)",
+            "es": "Duración (minutos)"
+          }
+        }
+      ]
+    }
+  ],
+  "scene_actions": [
+    {
+      "key": "refresh_now",
+      "label": {
+        "en": "Read the Hydro-Québec peaks now",
+        "fr": "Relire les pointes Hydro-Québec",
+        "de": "Hydro-Québec-Spitzen jetzt lesen",
+        "es": "Leer ahora las puntas de Hydro-Québec"
+      },
+      "description": {
+        "en": "Read the open data now and give where the offer stands, for the following actions.",
+        "fr": "Relit les données ouvertes et donne l'état de l'offre aux actions suivantes.",
+        "de": "Liest die offenen Daten jetzt und gibt den Zustand des Angebots an die folgenden Aktionen weiter.",
+        "es": "Lee ahora los datos abiertos y da el estado de la oferta a las acciones siguientes."
+      },
+      "timeout_seconds": 45,
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Offer",
+            "fr": "Offre",
+            "de": "Angebot",
+            "es": "Oferta"
+          },
+          "required": false
+        }
+      ],
+      "outputs": [
+        {
+          "key": "offer",
+          "type": "string",
+          "label": {
+            "en": "Offer code",
+            "fr": "Code de l'offre",
+            "de": "Angebotscode",
+            "es": "Código de la oferta"
+          }
+        },
+        {
+          "key": "peak_in_progress",
+          "type": "boolean",
+          "label": {
+            "en": "Peak in progress",
+            "fr": "Pointe en cours",
+            "de": "Spitze läuft",
+            "es": "Punta en curso"
+          }
+        },
+        {
+          "key": "preheat_in_progress",
+          "type": "boolean",
+          "label": {
+            "en": "Pre-heat in progress",
+            "fr": "Préchauffage en cours",
+            "de": "Vorheizen läuft",
+            "es": "Precalentamiento en curso"
+          }
+        },
+        {
+          "key": "next_peak_start",
+          "type": "string",
+          "label": {
+            "en": "Next peak start (Québec time)",
+            "fr": "Début de la prochaine pointe (heure du Québec)",
+            "de": "Beginn der nächsten Spitze (Ortszeit Québec)",
+            "es": "Inicio de la próxima punta (hora de Quebec)"
+          }
+        },
+        {
+          "key": "minutes_until_next_peak",
+          "type": "number",
+          "label": {
+            "en": "Minutes until the next peak",
+            "fr": "Minutes avant la prochaine pointe",
+            "de": "Minuten bis zur nächsten Spitze",
+            "es": "Minutos hasta la próxima punta"
+          }
+        }
+      ]
+    }
+  ]
+}
