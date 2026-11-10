@@ -6,6 +6,8 @@ All notable changes to this integration are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-11-10
+
 ### Added
 
 - Hydro-Québec winter peak events, read from Hydro-Québec's open data (no account, no key):
@@ -23,4 +25,5 @@ All notable changes to this integration are documented here. The format follows
 - "Test the connection" and "List the offers" actions.
 - English, French, German and Spanish texts and documentation.
 
-[Unreleased]: https://github.com/prohand/gladys-hydroquebec-peak/commits/main
+[Unreleased]: https://github.com/prohand/gladys-hydroquebec-peak/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/prohand/gladys-hydroquebec-peak/releases/tag/v1.0.1
