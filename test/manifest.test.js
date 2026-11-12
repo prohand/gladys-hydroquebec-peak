@@ -174,3 +174,8 @@ test('every text of the manifest exists in English, French, German and Spanish',
   walk(manifest, 'manifest');
   assert.deepEqual(missing, []);
 });
+
+test('the catalog countries: Canada, which needs Gladys >= 5.3.0', () => {
+  assert.deepEqual(manifest.countries, ['CA']);
+  assert.ok(isAtLeast(minGladysVersion(), [5, 3, 0]), 'countries needs Gladys 5.3.0');
+});

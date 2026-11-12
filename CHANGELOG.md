@@ -6,6 +6,12 @@ All notable changes to this integration are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- Declared for Canada only (`countries: ["CA"]`): the Gladys catalog of an
+  instance located elsewhere no longer lists it in its browse views (the
+  search still finds it). Requires Gladys 5.3.0 or later.
+
 ## [1.0.1] - 2026-11-10
 
 ### Added
