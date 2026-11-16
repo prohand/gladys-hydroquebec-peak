@@ -21,6 +21,11 @@ test('an empty Unreleased still names the release', () => {
 test('the changelog of this repository can be rolled', async () => {
   const text = await readFile(new URL('../CHANGELOG.md', import.meta.url), 'utf8');
   assert.match(text, /^## \[Unreleased\]$/m);
-  assert.match(text, new RegExp(`^\\[Unreleased\\]: ${REPO}/commits/main$`, 'm'));
-  assert.notEqual(rollChangelog(text, '1.0.1', '2026-11-12'), text);
+  // `commits/main` before the first release, `compare/vX...HEAD` after it.
+  assert.match(
+    text,
+    new RegExp(`^\\[Unreleased\\]: ${REPO}/(?:commits/main|compare/v\\S+\\.\\.\\.HEAD)$`, 'm'),
+  );
+  // A version that cannot exist yet: the real ones are already in the file.
+  assert.notEqual(rollChangelog(text, '999.0.0', '2026-11-12'), text);
 });
