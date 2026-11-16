@@ -1,6 +1,6 @@
 {
   "name": "gladys-hydroquebec-peak",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "description": "Gladys Assistant external integration for the Hydro-Québec winter peak events (open data).",
   "type": "module",

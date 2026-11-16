@@ -6,6 +6,10 @@ All notable changes to this integration are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.4] - 2026-11-16
+
+- Maintenance release, no functional change.
+
 ## [1.0.3] - 2026-11-16
 
 - Update `@gladysassistant/integration-sdk` to 0.16.1 (security update).
@@ -33,7 +37,8 @@ All notable changes to this integration are documented here. The format follows
 - "Test the connection" and "List the offers" actions.
 - English, French, German and Spanish texts and documentation.
 
-[Unreleased]: https://github.com/prohand/gladys-hydroquebec-peak/compare/v1.0.3...HEAD
+[Unreleased]: https://github.com/prohand/gladys-hydroquebec-peak/compare/v1.0.4...HEAD
+[1.0.4]: https://github.com/prohand/gladys-hydroquebec-peak/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/prohand/gladys-hydroquebec-peak/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/prohand/gladys-hydroquebec-peak/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/prohand/gladys-hydroquebec-peak/releases/tag/v1.0.1
