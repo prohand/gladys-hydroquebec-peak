@@ -6,6 +6,8 @@ All notable changes to this integration are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.5] - 2026-11-18
+
 ### Changed
 
 - Declared for Canada only (`countries: ["CA"]`): the Gladys catalog of an
@@ -43,7 +45,8 @@ All notable changes to this integration are documented here. The format follows
 - "Test the connection" and "List the offers" actions.
 - English, French, German and Spanish texts and documentation.
 
-[Unreleased]: https://github.com/prohand/gladys-hydroquebec-peak/compare/v1.0.4...HEAD
+[Unreleased]: https://github.com/prohand/gladys-hydroquebec-peak/compare/v1.0.5...HEAD
+[1.0.5]: https://github.com/prohand/gladys-hydroquebec-peak/compare/v1.0.4...v1.0.5
 [1.0.4]: https://github.com/prohand/gladys-hydroquebec-peak/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/prohand/gladys-hydroquebec-peak/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/prohand/gladys-hydroquebec-peak/compare/v1.0.1...v1.0.2
